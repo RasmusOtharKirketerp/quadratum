@@ -16,12 +16,12 @@ public class Main {
 		b.setOwner(1, 2, 2);
 		
 		Turn t = new Turn();
-		Turn.setFromX(2);
-		Turn.setFromY(2);
-		Turn.setToX(3);
-		Turn.setToY(3);
-		Turn.setRes(4);
-		Turn.setTeamId(t1.getTeamId());
+		t.setFromX(2);
+		t.setFromY(2);
+		t.setToX(3);
+		t.setToY(3);
+		t.setRes(4);
+		t.setTeamId(t1.getTeamId());
 		
 		
 			

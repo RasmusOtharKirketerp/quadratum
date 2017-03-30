@@ -3,14 +3,13 @@ package quadratum;
 public class Board {
 
 	// private
-	//   Board
+	// Board
 	static Quadratum[][] board;
 	static int sizeX;
 	static int sizeY;
-	//   Team
+	// Team
 	static Team[] players;
 	static int countTeams;
-
 
 	// Constructor
 	public Board(int sizeX, int sizeY) {
@@ -25,47 +24,42 @@ public class Board {
 		}
 		System.out.println("New board - Welcome to Quadratum!");
 	}
-	
-	public int getOwner(int teamId, int bx, int by){
+
+	public int getOwner(int teamId, int bx, int by) {
 		return board[bx][by].getTeamId();
 	}
-	public void setOwner(int teamId, int bx, int by){
+
+	public void setOwner(int teamId, int bx, int by) {
 		board[bx][by].setTeamId(teamId);
 	}
-	
-	public void handleResFrom(Turn t){ 
-		int fx = Turn.getFromX();
-		int fy = Turn.getFromY();
-		
+
+	public void handleResFrom(Turn t) {
+		int fx = t.getFromX();
+		int fy = t.getFromY();
+
 		// extract res from FROM CELL if player own it
-		if ( getOwner(Turn.getTeamId(), fx, fy) == Turn.getTeamId()) {
-			board[fx][fy].substractRes(Turn.getRes());
-		}
-		else
-		{
+		if (getOwner(t.getTeamId(), fx, fy) == t.getTeamId()) {
+			board[fx][fy].substractRes(t.getRes());
+		} else {
 			// play has moved resources from a cell he do not own
 			// TODO
-			Thread.dumpStack();			
+			Thread.dumpStack();
 		}
-		
-		
-		
+
 	}
-	public void handleResTo(Turn t){
-		int x    = Turn.getToX();
-		int y    = Turn.getToY();
-		int res  = Turn.getRes();
-		int tid  = Turn.getTeamId();
-		int bid  = board[x][y].getTeamId(); 
+
+	public void handleResTo(Turn t) {
+		int x = t.getToX();
+		int y = t.getToY();
+		int res = t.getRes();
+		int tid = t.getTeamId();
+		int bid = board[x][y].getTeamId();
 		int bres = board[x][y].getRes();
-		
-		
+
 		// Add res to TO CELL if team owns it
-		if (getOwner(tid, x, y) == Turn.getTeamId()) {
+		if (getOwner(tid, x, y) == t.getTeamId()) {
 			board[x][y].addRes(res);
-		}
-		else
-		{
+		} else {
 			// play has moved resources to a cell he do not own
 			if (bid == 0) // no owner
 			{
@@ -74,54 +68,51 @@ public class Board {
 			if (bid != 0) // enemy owner
 			{
 				// who has most resources
-				if (res > bres) // team will overtake cell with own res - enemy/board res
+				if (res > bres) // team will overtake cell with own res -
+								// enemy/board res
 				{
-					  board[x][y].addRes(res - bres);
-					  board[x][y].setTeamId(Turn.getTeamId());
+					board[x][y].addRes(res - bres);
+					board[x][y].setTeamId(t.getTeamId());
 				}
 				if (res == bres) // team will loose cell to no one
 				{
-					  board[x][y].setRes(0);
-					  board[x][y].setTeamId(0);
+					board[x][y].setRes(0);
+					board[x][y].setTeamId(0);
 				}
-				if (res < bres) // team will not overtake cell but reduce enemy res
+				if (res < bres) // team will not overtake cell but reduce enemy
+								// res
 				{
 					board[x][y].substractRes(bres - res);
 				}
 			}
-			
+
 		}
-		
-		
-		
+
 	}
-	
-	
-	public void doTurn(Turn t){
+
+	public void doTurn(Turn t) {
 		System.out.println("New Turn");
 		handleResFrom(t);
-		handleResTo(t);		
-	
+		handleResTo(t);
+
 	}
-	
-	public void setPlayerCount(int numOfTeams){
-		players = new Team[numOfTeams+1];
+
+	public void setPlayerCount(int numOfTeams) {
+		players = new Team[numOfTeams + 1];
 		// we uses team = 0 as no one team
-		countTeams = players.length+1;
+		countTeams = players.length + 1;
 	}
-	
-	public void addPlayer(Team t)
-	{
+
+	public void addPlayer(Team t) {
 		players[t.getTeamId()] = t;
 	}
 
-
 	public void print2console() {
 		for (int x = 0; x < Board.sizeX; x++) {
-			
+
 			for (int y = 0; y < Board.sizeY; y++) {
-				System.out.print(" r(" + board[x][y].getRes()+") ");
-				System.out.print(" team(" + board[x][y].getTeamId()+") ");
+				System.out.print(" r(" + board[x][y].getRes() + ") ");
+				System.out.print(" team(" + board[x][y].getTeamId() + ") ");
 			}
 			System.out.println();
 		}
