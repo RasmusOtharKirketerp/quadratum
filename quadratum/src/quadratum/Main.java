@@ -22,6 +22,7 @@ public class Main {
 		t.setToY(3);
 		t.setRes(4);
 		t.setTeamId(t1.getTeamId());
+		t.validate();
 		
 		
 			
